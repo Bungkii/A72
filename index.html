@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GROWMATE - กระถางคู่หู</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f0f9ff 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #1e293b;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+            padding: 20px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-title h1 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .header-title p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .icon-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .main-content {
+            padding: 25px;
+        }
+
+        .status-card {
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+
+        .status-info h2 {
+            color: #15803d;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .status-info h3 {
+            color: #166534;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .status-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(34, 197, 94, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: #15803d;
+        }
+
+        .metrics-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .metric-card {
+            flex: 1;
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(226, 232, 240, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .metric-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .metric-icon {
+            width: 20px;
+            height: 20px;
+            color: #64748b;
+        }
+
+        .metric-label {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .progress-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(226, 232, 240, 0.5);
+        }
+
+        .progress-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .progress-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .progress-dot {
+            width: 12px;
+            height: 12px;
+            background: #fbbf24;
+            border-radius: 50%;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #f1f5f9;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #fbbf24 0%, #f59e0b 100%);
+            border-radius: 4px;
+            transition: width 1s ease-in-out;
+            width: 65%;
+        }
+
+        .progress-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #64748b;
+            margin-bottom: 10px;
+        }
+
+        .progress-status {
+            text-align: center;
+            color: #d97706;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .controls-section {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(226, 232, 240, 0.5);
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #1e293b;
+        }
+
+        .control-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .control-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .control-icon {
+            width: 20px;
+            height: 20px;
+            color: #3b82f6;
+        }
+
+        .control-label {
+            font-size: 16px;
+            color: #1e293b;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 52px;
+            height: 28px;
+            background: #3b82f6;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .water-button {
+            width: 100%;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            padding: 18px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .water-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .water-button:active {
+            transform: scale(0.98);
+        }
+
+        .water-status {
+            text-align: center;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .notification {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .notification-icon {
+            width: 20px;
+            height: 20px;
+            color: #d97706;
+        }
+
+        .notification-text {
+            flex: 1;
+        }
+
+        .notification-title {
+            font-weight: 600;
+            color: #92400e;
+            margin-bottom: 2px;
+        }
+
+        .notification-desc {
+            font-size: 14px;
+            color: #a16207;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .pulsing {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .slide-in {
+            animation: slideIn 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-left">
+                <div class="logo">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M7 20h10"/>
+                        <path d="M10 20c5.5-2.5.8-6.4 3-10"/>
+                        <path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"/>
+                        <path d="M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z"/>
+                    </svg>
+                </div>
+                <div class="header-title">
+                    <h1>GROWMATE</h1>
+                    <p>กระถางอัจฉริยะ</p>
+                </div>
+            </div>
+            <div class="header-icons">
+                <div class="icon-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M2 17h20v2H2zm1.15-4.05L4 11l.85 1.95L6.8 13l-1.95.85L4 15.8l-.85-1.95L1.2 13l1.95-.85zm6.7-6.7L9 5l.85 1.95L11.8 7l-1.95.85L9 9.8 8.15 7.85 6.2 7l1.95-.85zm7.07 9.07l.71.71-8.49 8.49-.71-.71 8.49-8.49z"/>
+                    </svg>
+                </div>
+                <div class="icon-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+                        <circle cx="12" cy="12" r="3"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Status Card -->
+            <div class="status-card slide-in">
+                <div class="status-info">
+                    <h2>สุขภาพพืช</h2>
+                    <h3>ดีเยี่ยม</h3>
+                </div>
+                <div class="status-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M7 20h10"/>
+                        <path d="M10 20c5.5-2.5.8-6.4 3-10"/>
+                        <path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"/>
+                        <path d="M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z"/>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Metrics Row -->
+            <div class="metrics-row">
+                <div class="metric-card slide-in">
+                    <div class="metric-header">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="metric-icon">
+                            <path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/>
+                        </svg>
+                        <div class="metric-label">อุณหภูมิ</div>
+                    </div>
+                    <div class="metric-value" id="temperature">24.9°C</div>
+                </div>
+                <div class="metric-card slide-in">
+                    <div class="metric-header">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="metric-icon">
+                            <path d="M2 12c0-2.38 7.19-6 8-6s8 3.62 8 6-7.19 6-8 6-8-3.62-8-6Z"/>
+                            <path d="M18 12h.01"/>
+                            <path d="M6 12h.01"/>
+                        </svg>
+                        <div class="metric-label">ความชื้น</div>
+                    </div>
+                    <div class="metric-value" id="humidity">80%</div>
+                </div>
+            </div>
+
+            <!-- Progress Card -->
+            <div class="progress-card slide-in">
+                <div class="progress-header">
+                    <div class="progress-title">ความชื้นในดิน</div>
+                    <div class="progress-dot"></div>
+                </div>
+                <div class="progress-labels">
+                    <span>0%</span>
+                    <span>65%</span>
+                    <span>100%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="soilProgress"></div>
+                </div>
+                <div class="progress-status">ปานกลาง</div>
+            </div>
+
+            <!-- Controls Section -->
+            <div class="controls-section slide-in">
+                <div class="section-title">ระบบควบคุม</div>
+                
+                <div class="control-item">
+                    <div class="control-info">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="control-icon">
+                            <path d="M2 12c0-2.38 7.19-6 8-6s8 3.62 8 6-7.19 6-8 6-8-3.62-8-6Z"/>
+                            <path d="M18 12h.01"/>
+                            <path d="M6 12h.01"/>
+                        </svg>
+                        <div class="control-label">รดน้ำอัตโนมัติ</div>
+                    </div>
+                    <div class="toggle-switch" id="autoWater"></div>
+                </div>
+
+                <button class="water-button" id="manualWater">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M2 12c0-2.38 7.19-6 8-6s8 3.62 8 6-7.19 6-8 6-8-3.62-8-6Z"/>
+                        <path d="M18 12h.01"/>
+                        <path d="M6 12h.01"/>
+                    </svg>
+                    <span>รดน้ำตอนนี้</span>
+                </button>
+                <div class="water-status">รดน้ำครั้งล่าสุด: 2 ชั่วโมงที่แล้ว</div>
+            </div>
+
+            <!-- Notification -->
+            <div class="notification slide-in">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="notification-icon">
+                    <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
+                    <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+                </svg>
+                <div class="notification-text">
+                    <div class="notification-title">การแจ้งเตือน</div>
+                    <div class="notification-desc">ระบบทำงานปกติดี</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simulate real-time data updates
+        let temperature = 24.9;
+        let humidity = 80;
+        let soilMoisture = 65;
+
+        // Auto-water toggle functionality
+        const autoWaterToggle = document.getElementById('autoWater');
+        let autoWaterEnabled = true;
+
+        autoWaterToggle.addEventListener('click', function() {
+            autoWaterEnabled = !autoWaterEnabled;
+            if (autoWaterEnabled) {
+                this.style.background = '#3b82f6';
+                this.style.transform = 'none';
+            } else {
+                this.style.background = '#e2e8f0';
+                this.querySelector('::before') && (this.style.setProperty('--toggle-position', '2px'));
+            }
+        });
+
+        // Manual water button
+        const manualWaterBtn = document.getElementById('manualWater');
+        manualWaterBtn.addEventListener('click', function() {
+            this.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2 12c0-2.38 7.19-6 8-6s8 3.62 8 6-7.19 6-8 6-8-3.62-8-6Z"/>
+                    <path d="M18 12h.01"/>
+                    <path d="M6 12h.01"/>
+                </svg>
+                <span>กำลังรดน้ำ...</span>`;
+            this.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+            
+            setTimeout(() => {
+                this.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 6 9 17l-5-5"/>
+                    </svg>
+                    <span>รดน้ำเสร็จแล้ว</span>`;
+                setTimeout(() => {
+                    this.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M2 12c0-2.38 7.19-6 8-6s8 3.62 8 6-7.19 6-8 6-8-3.62-8-6Z"/>
+                            <path d="M18 12h.01"/>
+                            <path d="M6 12h.01"/>
+                        </svg>
+                        <span>รดน้ำด้วยตนเอง</span>`;
+                    this.style.background = 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)';
+                    document.querySelector('.water-status').textContent = 'รดน้ำครั้งล่าสุด: เมื่อสักครู่';
+                    
+                    // Update soil moisture
+                    soilMoisture = Math.min(95, soilMoisture + 15);
+                    updateSoilMoisture();
+                }, 2000);
+            }, 3000);
+        });
+
+        // Update soil moisture display
+        function updateSoilMoisture() {
+            const progressFill = document.getElementById('soilProgress');
+            const progressLabels = document.querySelector('.progress-labels');
+            const progressStatus = document.querySelector('.progress-status');
+            
+            progressFill.style.width = soilMoisture + '%';
+            progressLabels.children[1].textContent = soilMoisture + '%';
+            
+            if (soilMoisture < 30) {
+                progressStatus.textContent = 'ความชื้นแห้ง';
+                progressStatus.style.color = '#dc2626';
+                progressFill.style.background = 'linear-gradient(90deg, #ef4444 0%, #dc2626 100%)';
+            } else if (soilMoisture < 70) {
+                progressStatus.textContent = 'ความชื้นปานกลาง';
+                progressStatus.style.color = '#d97706';
+                progressFill.style.background = 'linear-gradient(90deg, #fbbf24 0%, #f59e0b 100%)';
+            } else {
+                progressStatus.textContent = 'ความชื้นปกติ';
+                progressStatus.style.color = '#059669';
+                progressFill.style.background = 'linear-gradient(90deg, #10b981 0%, #059669 100%)';
+            }
+        }
+
+        // Simulate sensor data changes
+        function updateSensorData() {
+            // Random variations
+            temperature += (Math.random() - 0.5) * 0.2;
+            temperature = Math.max(20, Math.min(35, temperature));
+            
+            humidity += (Math.random() - 0.5) * 2;
+            humidity = Math.max(60, Math.min(90, humidity));
+            
+            if (!autoWaterEnabled) {
+                soilMoisture -= 0.1; // Gradual decrease when auto-water is off
+                soilMoisture = Math.max(0, soilMoisture);
+            } else if (soilMoisture < 40) {
+                soilMoisture += 1; // Auto-water kicks in
+            }
+            
+            // Update displays
+            document.getElementById('temperature').textContent = temperature.toFixed(1) + '°C';
+            document.getElementById('humidity').textContent = Math.round(humidity) + '%';
+            updateSoilMoisture();
+        }
+
+        // Update every 3 seconds
+        setInterval(updateSensorData, 3000);
+
+        // Add pulsing effect to status icon
+        setInterval(() => {
+            document.querySelector('.status-icon').classList.toggle('pulsing');
+        }, 2000);
+
+        // Initialize
+        updateSoilMoisture();
+    </script>
+</body>
+</html>
