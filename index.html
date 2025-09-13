@@ -90,6 +90,24 @@
             transform: scale(1.05);
         }
 
+        .connection-status {
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .connected {
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            color: #15803d;
+        }
+
+        .disconnected {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            color: #dc2626;
+        }
+
         .main-content {
             padding: 25px;
         }
@@ -201,6 +219,7 @@
             height: 12px;
             background: #fbbf24;
             border-radius: 50%;
+            transition: all 0.3s ease;
         }
 
         .progress-bar {
@@ -279,23 +298,31 @@
             position: relative;
             width: 52px;
             height: 28px;
-            background: #3b82f6;
+            background: #e2e8f0;
             border-radius: 14px;
             cursor: pointer;
             transition: all 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background: #3b82f6;
         }
 
         .toggle-switch::before {
             content: '';
             position: absolute;
             top: 2px;
-            right: 2px;
+            left: 2px;
             width: 24px;
             height: 24px;
             background: white;
             border-radius: 50%;
             transition: all 0.3s ease;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .toggle-switch.active::before {
+            transform: translateX(24px);
         }
 
         .water-button {
@@ -325,6 +352,12 @@
             transform: scale(0.98);
         }
 
+        .water-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
         .water-status {
             text-align: center;
             font-size: 14px;
@@ -339,6 +372,7 @@
             align-items: center;
             gap: 15px;
             border: 1px solid rgba(245, 158, 11, 0.2);
+            margin-bottom: 20px;
         }
 
         .notification-icon {
@@ -360,6 +394,30 @@
         .notification-desc {
             font-size: 14px;
             color: #a16207;
+        }
+
+        .settings-panel {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(226, 232, 240, 0.5);
+        }
+
+        .setting-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .setting-input {
+            width: 80px;
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
         }
 
         @keyframes pulse {
@@ -385,6 +443,16 @@
         .slide-in {
             animation: slideIn 0.6s ease-out;
         }
+
+        .error {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            color: #dc2626;
+        }
+
+        .warning {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #d97706;
+        }
     </style>
 </head>
 <body>
@@ -406,12 +474,15 @@
                 </div>
             </div>
             <div class="header-icons">
-                <div class="icon-btn">
+                <div class="icon-btn" id="refreshBtn">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M2 17h20v2H2zm1.15-4.05L4 11l.85 1.95L6.8 13l-1.95.85L4 15.8l-.85-1.95L1.2 13l1.95-.85zm6.7-6.7L9 5l.85 1.95L11.8 7l-1.95.85L9 9.8 8.15 7.85 6.2 7l1.95-.85zm7.07 9.07l.71.71-8.49 8.49-.71-.71 8.49-8.49z"/>
+                        <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+                        <path d="M21 3v5h-5"/>
+                        <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+                        <path d="M3 21v-5h5"/>
                     </svg>
                 </div>
-                <div class="icon-btn">
+                <div class="icon-btn" id="settingsBtn">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
                         <circle cx="12" cy="12" r="3"/>
@@ -420,13 +491,18 @@
             </div>
         </div>
 
+        <!-- Connection Status -->
+        <div class="connection-status connected" id="connectionStatus">
+            🟢 เชื่อมต่อเซ็นเซอร์สำเร็จ
+        </div>
+
         <!-- Main Content -->
         <div class="main-content">
             <!-- Status Card -->
             <div class="status-card slide-in">
                 <div class="status-info">
                     <h2>สุขภาพพืช</h2>
-                    <h3>ดีเยี่ยม</h3>
+                    <h3 id="plantHealth">ดีเยี่ยม</h3>
                 </div>
                 <div class="status-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -466,17 +542,34 @@
             <div class="progress-card slide-in">
                 <div class="progress-header">
                     <div class="progress-title">ความชื้นในดิน</div>
-                    <div class="progress-dot"></div>
+                    <div class="progress-dot" id="soilStatusDot"></div>
                 </div>
                 <div class="progress-labels">
-                    <span>0%</span>
-                    <span>65%</span>
-                    <span>100%</span>
+                    <span>แห้ง</span>
+                    <span id="soilPercentLabel">65%</span>
+                    <span>เปียก</span>
                 </div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="soilProgress"></div>
                 </div>
-                <div class="progress-status">ปานกลาง</div>
+                <div class="progress-status" id="soilStatus">ปานกลาง</div>
+            </div>
+
+            <!-- Settings Panel -->
+            <div class="settings-panel slide-in" id="settingsPanel" style="display: none;">
+                <div class="section-title">การตั้งค่า</div>
+                <div class="setting-item">
+                    <div class="control-label">เซิร์ฟเวอร์ ESP32</div>
+                    <input type="text" class="setting-input" id="serverIP" placeholder="192.168.1.100" style="width: 140px;">
+                </div>
+                <div class="setting-item">
+                    <div class="control-label">รดน้ำเมื่อความชื้น < </div>
+                    <input type="number" class="setting-input" id="moistureThreshold" value="30" min="0" max="100">
+                </div>
+                <div class="setting-item">
+                    <div class="control-label">ระยะเวลารดน้ำ (วินาที)</div>
+                    <input type="number" class="setting-input" id="waterDuration" value="5" min="1" max="30">
+                </div>
             </div>
 
             <!-- Controls Section -->
@@ -492,7 +585,7 @@
                         </svg>
                         <div class="control-label">รดน้ำอัตโนมัติ</div>
                     </div>
-                    <div class="toggle-switch" id="autoWater"></div>
+                    <div class="toggle-switch active" id="autoWater"></div>
                 </div>
 
                 <button class="water-button" id="manualWater">
@@ -503,136 +596,388 @@
                     </svg>
                     <span>รดน้ำตอนนี้</span>
                 </button>
-                <div class="water-status">รดน้ำครั้งล่าสุด: 2 ชั่วโมงที่แล้ว</div>
+                <div class="water-status" id="waterStatus">รดน้ำครั้งล่าสุด: 2 ชั่วโมงที่แล้ว</div>
             </div>
 
             <!-- Notification -->
-            <div class="notification slide-in">
+            <div class="notification slide-in" id="notification">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="notification-icon">
                     <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
                     <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
                 </svg>
                 <div class="notification-text">
                     <div class="notification-title">การแจ้งเตือน</div>
-                    <div class="notification-desc">ระบบทำงานปกติดี</div>
+                    <div class="notification-desc" id="notificationText">ระบบทำงานปกติดี</div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Simulate real-time data updates
+        // Global variables
         let temperature = 24.9;
         let humidity = 80;
         let soilMoisture = 65;
-
-        // Auto-water toggle functionality
-        const autoWaterToggle = document.getElementById('autoWater');
         let autoWaterEnabled = true;
+        let serverIP = '192.168.1.100'; // Default ESP32 IP
+        let moistureThreshold = 30;
+        let waterDuration = 5;
+        let lastWaterTime = new Date(Date.now() - 2 * 60 * 60 * 1000); // 2 hours ago
+        let isConnected = false;
+
+        // DOM elements
+        const connectionStatus = document.getElementById('connectionStatus');
+        const plantHealth = document.getElementById('plantHealth');
+        const temperatureEl = document.getElementById('temperature');
+        const humidityEl = document.getElementById('humidity');
+        const soilProgressEl = document.getElementById('soilProgress');
+        const soilPercentLabel = document.getElementById('soilPercentLabel');
+        const soilStatus = document.getElementById('soilStatus');
+        const soilStatusDot = document.getElementById('soilStatusDot');
+        const autoWaterToggle = document.getElementById('autoWater');
+        const manualWaterBtn = document.getElementById('manualWater');
+        const waterStatus = document.getElementById('waterStatus');
+        const notification = document.getElementById('notification');
+        const notificationText = document.getElementById('notificationText');
+        const refreshBtn = document.getElementById('refreshBtn');
+        const settingsBtn = document.getElementById('settingsBtn');
+        const settingsPanel = document.getElementById('settingsPanel');
+        const serverIPInput = document.getElementById('serverIP');
+        const moistureThresholdInput = document.getElementById('moistureThreshold');
+        const waterDurationInput = document.getElementById('waterDuration');
+
+        // Initialize settings
+        serverIPInput.value = serverIP;
+        moistureThresholdInput.value = moistureThreshold;
+        waterDurationInput.value = waterDuration;
+
+        // Event listeners
+        refreshBtn.addEventListener('click', fetchSensorData);
+        
+        settingsBtn.addEventListener('click', () => {
+            settingsPanel.style.display = settingsPanel.style.display === 'none' ? 'block' : 'none';
+        });
+
+        serverIPInput.addEventListener('change', (e) => {
+            serverIP = e.target.value;
+        });
+
+        moistureThresholdInput.addEventListener('change', (e) => {
+            moistureThreshold = parseInt(e.target.value);
+        });
+
+        waterDurationInput.addEventListener('change', (e) => {
+            waterDuration = parseInt(e.target.value);
+        });
 
         autoWaterToggle.addEventListener('click', function() {
             autoWaterEnabled = !autoWaterEnabled;
-            if (autoWaterEnabled) {
-                this.style.background = '#3b82f6';
-                this.style.transform = 'none';
-            } else {
-                this.style.background = '#e2e8f0';
-                this.querySelector('::before') && (this.style.setProperty('--toggle-position', '2px'));
-            }
+            this.classList.toggle('active');
+            updateNotification(
+                autoWaterEnabled ? 'เปิดระบบรดน้ำอัตโนมัติแล้ว' : 'ปิดระบบรดน้ำอัตโนมัติแล้ว',
+                autoWaterEnabled ? 'warning' : 'error'
+            );
         });
 
-        // Manual water button
-        const manualWaterBtn = document.getElementById('manualWater');
-        manualWaterBtn.addEventListener('click', function() {
-            this.innerHTML = `
+        manualWaterBtn.addEventListener('click', triggerManualWatering);
+
+        // Fetch sensor data from ESP32
+        async function fetchSensorData() {
+            try {
+                refreshBtn.style.transform = 'rotate(360deg)';
+                const response = await fetch(`http://${serverIP}/data`);
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
+                const data = await response.json();
+                
+                // Update sensor values
+                temperature = data.temperature || temperature;
+                humidity = data.humidity || humidity;
+                soilMoisture = data.soilMoisture || soilMoisture;
+                
+                updateConnectionStatus(true);
+                updateDisplay();
+                
+                // Check if auto-watering is needed
+                if (autoWaterEnabled && soilMoisture < moistureThreshold) {
+                    setTimeout(() => triggerAutoWatering(), 1000);
+                }
+                
+            } catch (error) {
+                console.error('Error fetching sensor data:', error);
+                updateConnectionStatus(false);
+                simulateSensorData(); // Fallback to simulated data
+            } finally {
+                setTimeout(() => {
+                    refreshBtn.style.transform = 'rotate(0deg)';
+                }, 300);
+            }
+        }
+
+        // Trigger manual watering
+        async function triggerManualWatering() {
+            if (manualWaterBtn.disabled) return;
+            
+            manualWaterBtn.disabled = true;
+            manualWaterBtn.innerHTML = `
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M2 12c0-2.38 7.19-6 8-6s8 3.62 8 6-7.19 6-8 6-8-3.62-8-6Z"/>
                     <path d="M18 12h.01"/>
                     <path d="M6 12h.01"/>
                 </svg>
                 <span>กำลังรดน้ำ...</span>`;
-            this.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+            manualWaterBtn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
             
-            setTimeout(() => {
-                this.innerHTML = `
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20 6 9 17l-5-5"/>
-                    </svg>
-                    <span>รดน้ำเสร็จแล้ว</span>`;
-                setTimeout(() => {
-                    this.innerHTML = `
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M2 12c0-2.38 7.19-6 8-6s8 3.62 8 6-7.19 6-8 6-8-3.62-8-6Z"/>
-                            <path d="M18 12h.01"/>
-                            <path d="M6 12h.01"/>
-                        </svg>
-                        <span>รดน้ำด้วยตนเอง</span>`;
-                    this.style.background = 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)';
-                    document.querySelector('.water-status').textContent = 'รดน้ำครั้งล่าสุด: เมื่อสักครู่';
+            try {
+                const response = await fetch(`http://${serverIP}/water`, {
+                    method: 'POST'
+                });
+                
+                if (response.ok) {
+                    updateWaterStatus();
+                    soilMoisture = Math.min(95, soilMoisture + 25);
+                    updateDisplay();
                     
-                    // Update soil moisture
-                    soilMoisture = Math.min(95, soilMoisture + 15);
-                    updateSoilMoisture();
-                }, 2000);
-            }, 3000);
-        });
+                    setTimeout(() => {
+                        manualWaterBtn.innerHTML = `
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 6 9 17l-5-5"/>
+                            </svg>
+                            <span>รดน้ำเสร็จแล้ว</span>`;
+                        
+                        setTimeout(() => {
+                            resetWaterButton();
+                        }, 2000);
+                    }, waterDuration * 1000);
+                } else {
+                    throw new Error('Failed to trigger watering');
+                }
+            } catch (error) {
+                console.error('Error triggering manual watering:', error);
+                updateNotification('ไม่สามารถรดน้ำได้ กรุณาตรวจสอบการเชื่อมต่อ', 'error');
+                resetWaterButton();
+            }
+        }
+
+        // Trigger auto watering
+        async function triggerAutoWatering() {
+            try {
+                const response = await fetch(`http://${serverIP}/water`, {
+                    method: 'POST'
+                });
+                
+                if (response.ok) {
+                    updateWaterStatus();
+                    soilMoisture = Math.min(95, soilMoisture + 20);
+                    updateDisplay();
+                    updateNotification('รดน้ำอัตโนมัติเสร็จแล้ว', 'warning');
+                }
+            } catch (error) {
+                console.error('Error triggering auto watering:', error);
+                updateNotification('รดน้ำอัตโนมัติล้มเหลว', 'error');
+            }
+        }
+
+        // Reset water button
+        function resetWaterButton() {
+            manualWaterBtn.disabled = false;
+            manualWaterBtn.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2 12c0-2.38 7.19-6 8-6s8 3.62 8 6-7.19 6-8 6-8-3.62-8-6Z"/>
+                    <path d="M18 12h.01"/>
+                    <path d="M6 12h.01"/>
+                </svg>
+                <span>รดน้ำตอนนี้</span>`;
+            manualWaterBtn.style.background = 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)';
+        }
+
+        // Update connection status
+        function updateConnectionStatus(connected) {
+            isConnected = connected;
+            if (connected) {
+                connectionStatus.className = 'connection-status connected';
+                connectionStatus.textContent = '🟢 เชื่อมต่อเซ็นเซอร์สำเร็จ';
+            } else {
+                connectionStatus.className = 'connection-status disconnected';
+                connectionStatus.textContent = '🔴 ไม่สามารถเชื่อมต่อเซ็นเซอร์ได้';
+            }
+        }
+
+        // Update water status
+        function updateWaterStatus() {
+            lastWaterTime = new Date();
+            waterStatus.textContent = 'รดน้ำครั้งล่าสุด: เมื่อสักครู่';
+        }
+
+        // Update display
+        function updateDisplay() {
+            // Update temperature and humidity
+            temperatureEl.textContent = temperature.toFixed(1) + '°C';
+            humidityEl.textContent = Math.round(humidity) + '%';
+            
+            // Update soil moisture
+            updateSoilMoisture();
+            
+            // Update plant health
+            updatePlantHealth();
+            
+            // Update time since last watering
+            updateLastWateringTime();
+        }
 
         // Update soil moisture display
         function updateSoilMoisture() {
-            const progressFill = document.getElementById('soilProgress');
-            const progressLabels = document.querySelector('.progress-labels');
-            const progressStatus = document.querySelector('.progress-status');
-            
-            progressFill.style.width = soilMoisture + '%';
-            progressLabels.children[1].textContent = soilMoisture + '%';
+            soilProgressEl.style.width = soilMoisture + '%';
+            soilPercentLabel.textContent = soilMoisture + '%';
             
             if (soilMoisture < 30) {
-                progressStatus.textContent = 'ความชื้นแห้ง';
-                progressStatus.style.color = '#dc2626';
-                progressFill.style.background = 'linear-gradient(90deg, #ef4444 0%, #dc2626 100%)';
+                soilStatus.textContent = 'แห้ง - ต้องการน้ำ';
+                soilStatus.style.color = '#dc2626';
+                soilProgressEl.style.background = 'linear-gradient(90deg, #ef4444 0%, #dc2626 100%)';
+                soilStatusDot.style.background = '#dc2626';
+                updateNotification('ความชื้นในดินต่ำ ควรรดน้ำ', 'error');
             } else if (soilMoisture < 70) {
-                progressStatus.textContent = 'ความชื้นปานกลาง';
-                progressStatus.style.color = '#d97706';
-                progressFill.style.background = 'linear-gradient(90deg, #fbbf24 0%, #f59e0b 100%)';
+                soilStatus.textContent = 'ปานกลาง';
+                soilStatus.style.color = '#d97706';
+                soilProgressEl.style.background = 'linear-gradient(90deg, #fbbf24 0%, #f59e0b 100%)';
+                soilStatusDot.style.background = '#fbbf24';
+                updateNotification('ระบบทำงานปกติดี', 'warning');
             } else {
-                progressStatus.textContent = 'ความชื้นปกติ';
-                progressStatus.style.color = '#059669';
-                progressFill.style.background = 'linear-gradient(90deg, #10b981 0%, #059669 100%)';
+                soilStatus.textContent = 'เปียก - สภาวะดี';
+                soilStatus.style.color = '#059669';
+                soilProgressEl.style.background = 'linear-gradient(90deg, #10b981 0%, #059669 100%)';
+                soilStatusDot.style.background = '#10b981';
+                updateNotification('ความชื้นในดินเหมาะสม', 'success');
             }
         }
 
-        // Simulate sensor data changes
-        function updateSensorData() {
-            // Random variations
-            temperature += (Math.random() - 0.5) * 0.2;
+        // Update plant health
+        function updatePlantHealth() {
+            const tempOk = temperature >= 20 && temperature <= 30;
+            const humidityOk = humidity >= 60 && humidity <= 90;
+            const soilOk = soilMoisture >= 30;
+            
+            if (tempOk && humidityOk && soilOk) {
+                plantHealth.textContent = 'ดีเยี่ยม';
+                plantHealth.style.color = '#166534';
+            } else if ((tempOk && humidityOk) || (tempOk && soilOk) || (humidityOk && soilOk)) {
+                plantHealth.textContent = 'ปกติ';
+                plantHealth.style.color = '#d97706';
+            } else {
+                plantHealth.textContent = 'ต้องดูแล';
+                plantHealth.style.color = '#dc2626';
+            }
+        }
+
+        // Update notification
+        function updateNotification(message, type = 'warning') {
+            notificationText.textContent = message;
+            
+            notification.className = `notification slide-in ${type}`;
+            
+            // Auto-hide success messages
+            if (type === 'success') {
+                setTimeout(() => {
+                    notification.style.opacity = '0.7';
+                }, 3000);
+                setTimeout(() => {
+                    notification.style.opacity = '1';
+                }, 6000);
+            }
+        }
+
+        // Update last watering time
+        function updateLastWateringTime() {
+            const now = new Date();
+            const diff = now - lastWaterTime;
+            const minutes = Math.floor(diff / (1000 * 60));
+            const hours = Math.floor(minutes / 60);
+            const days = Math.floor(hours / 24);
+            
+            let timeText;
+            if (minutes < 1) {
+                timeText = 'เมื่อสักครู่';
+            } else if (minutes < 60) {
+                timeText = `${minutes} นาทีที่แล้ว`;
+            } else if (hours < 24) {
+                timeText = `${hours} ชั่วโมงที่แล้ว`;
+            } else {
+                timeText = `${days} วันที่แล้ว`;
+            }
+            
+            waterStatus.textContent = `รดน้ำครั้งล่าสุด: ${timeText}`;
+        }
+
+        // Simulate sensor data (fallback when ESP32 is not connected)
+        function simulateSensorData() {
+            // Random variations for demo
+            temperature += (Math.random() - 0.5) * 0.3;
             temperature = Math.max(20, Math.min(35, temperature));
             
-            humidity += (Math.random() - 0.5) * 2;
+            humidity += (Math.random() - 0.5) * 3;
             humidity = Math.max(60, Math.min(90, humidity));
             
             if (!autoWaterEnabled) {
-                soilMoisture -= 0.1; // Gradual decrease when auto-water is off
+                soilMoisture -= Math.random() * 0.2; // Gradual decrease
                 soilMoisture = Math.max(0, soilMoisture);
-            } else if (soilMoisture < 40) {
-                soilMoisture += 1; // Auto-water kicks in
+            } else if (soilMoisture < moistureThreshold) {
+                soilMoisture += Math.random() * 2; // Auto-water simulation
             }
             
-            // Update displays
-            document.getElementById('temperature').textContent = temperature.toFixed(1) + '°C';
-            document.getElementById('humidity').textContent = Math.round(humidity) + '%';
-            updateSoilMoisture();
+            updateDisplay();
         }
 
-        // Update every 3 seconds
-        setInterval(updateSensorData, 3000);
+        // Automatic data refresh
+        function startAutoRefresh() {
+            // Try to fetch real data every 10 seconds
+            setInterval(() => {
+                if (isConnected) {
+                    fetchSensorData();
+                } else {
+                    // Try to reconnect
+                    fetchSensorData();
+                }
+            }, 10000);
+
+            // Update display every 3 seconds (for time updates and simulated data)
+            setInterval(() => {
+                if (!isConnected) {
+                    simulateSensorData();
+                } else {
+                    updateLastWateringTime();
+                }
+            }, 3000);
+        }
 
         // Add pulsing effect to status icon
-        setInterval(() => {
-            document.querySelector('.status-icon').classList.toggle('pulsing');
-        }, 2000);
+        function startStatusAnimation() {
+            setInterval(() => {
+                document.querySelector('.status-icon').classList.toggle('pulsing');
+            }, 2000);
+        }
 
-        // Initialize
-        updateSoilMoisture();
+        // Initialize application
+        function init() {
+            updateDisplay();
+            startAutoRefresh();
+            startStatusAnimation();
+            
+            // Initial connection attempt
+            fetchSensorData();
+            
+            // Show connection hint if not connected after 5 seconds
+            setTimeout(() => {
+                if (!isConnected) {
+                    updateNotification(`ไม่สามารถเชื่อมต่อ ESP32 ที่ ${serverIP} ได้ - ใช้ข้อมูลจำลอง`, 'error');
+                }
+            }, 5000);
+        }
+
+        // Start the application
+        init();
     </script>
 </body>
 </html>
