@@ -3,981 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GROWMATE</title>
+    <title>GROWMATE | Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f0f9ff 100%);
-            min-height: 100vh;
-            padding: 20px;
-            color: #1e293b;
-        }
-
-        .container {
-            max-width: 400px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 24px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .header {
-            background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
-            padding: 20px;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .logo {
-            width: 50px;
-            height: 50px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            backdrop-filter: blur(10px);
-        }
-
-        .header-title h1 {
-            font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 2px;
-        }
-
-        .header-title p {
-            font-size: 14px;
-            opacity: 0.9;
-        }
-
-        .header-icons {
-            display: flex;
-            gap: 10px;
-        }
-
-        .icon-btn {
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .icon-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: scale(1.05);
-        }
-
-        .connection-status {
-            text-align: center;
-            padding: 10px;
-            font-size: 14px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .connected {
-            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
-            color: #15803d;
-        }
-
-        .disconnected {
-            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
-            color: #dc2626;
-        }
-
-        .main-content {
-            padding: 25px;
-        }
-
-        .status-card {
-            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border: 1px solid rgba(34, 197, 94, 0.2);
-        }
-
-        .status-info h2 {
-            color: #15803d;
-            font-size: 16px;
-            margin-bottom: 5px;
-        }
-
-        .status-info h3 {
-            color: #166534;
-            font-size: 24px;
-            font-weight: 700;
-        }
-
-        .status-icon {
-            width: 60px;
-            height: 60px;
-            background: rgba(34, 197, 94, 0.2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            color: #15803d;
-        }
-
-        .metrics-row {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-
-        .metric-card {
-            flex: 1;
-            background: white;
-            border-radius: 16px;
-            padding: 20px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(226, 232, 240, 0.5);
-            transition: all 0.3s ease;
-        }
-
-        .metric-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .metric-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 8px;
-        }
-
-        .metric-icon {
-            width: 20px;
-            height: 20px;
-            color: #64748b;
-        }
-
-        .metric-label {
-            color: #64748b;
-            font-size: 14px;
-        }
-
-        .metric-value {
-            font-size: 24px;
-            font-weight: 700;
-            color: #1e293b;
-        }
-
-        .progress-card {
-            background: white;
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(226, 232, 240, 0.5);
-        }
-
-        .progress-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-
-        .progress-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: #1e293b;
-        }
-
-        .progress-dot {
-            width: 12px;
-            height: 12px;
-            background: #fbbf24;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: #f1f5f9;
-            border-radius: 4px;
-            overflow: hidden;
-            margin-bottom: 15px;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #fbbf24 0%, #f59e0b 100%);
-            border-radius: 4px;
-            transition: width 1s ease-in-out;
-            width: 65%;
-        }
-
-        .progress-labels {
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
-            color: #64748b;
-            margin-bottom: 10px;
-        }
-
-        .progress-status {
-            text-align: center;
-            color: #d97706;
-            font-weight: 600;
-            font-size: 16px;
-        }
-
-        .controls-section {
-            background: white;
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(226, 232, 240, 0.5);
-        }
-
-        .section-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: #1e293b;
-        }
-
-        .control-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-
-        .control-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .control-icon {
-            width: 20px;
-            height: 20px;
-            color: #3b82f6;
-        }
-
-        .control-label {
-            font-size: 16px;
-            color: #1e293b;
-        }
-
-        .toggle-switch {
-            position: relative;
-            width: 52px;
-            height: 28px;
-            background: #e2e8f0;
-            border-radius: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .toggle-switch.active {
-            background: #3b82f6;
-        }
-
-        .toggle-switch::before {
-            content: '';
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            width: 24px;
-            height: 24px;
-            background: white;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-
-        .toggle-switch.active::before {
-            transform: translateX(24px);
-        }
-
-        .water-button {
-            width: 100%;
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-            color: white;
-            border: none;
-            border-radius: 16px;
-            padding: 18px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .water-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
-        }
-
-        .water-button:active {
-            transform: scale(0.98);
-        }
-
-        .water-button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .water-status {
-            text-align: center;
-            font-size: 14px;
-            color: #64748b;
-        }
-
-        .notification {
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-            border-radius: 16px;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            border: 1px solid rgba(245, 158, 11, 0.2);
-            margin-bottom: 20px;
-        }
-
-        .notification-icon {
-            width: 20px;
-            height: 20px;
-            color: #d97706;
-        }
-
-        .notification-text {
-            flex: 1;
-        }
-
-        .notification-title {
-            font-weight: 600;
-            color: #92400e;
-            margin-bottom: 2px;
-        }
-
-        .notification-desc {
-            font-size: 14px;
-            color: #a16207;
-        }
-
-        .settings-panel {
-            background: white;
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(226, 232, 240, 0.5);
-        }
-
-        .setting-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 15px;
-        }
-
-        .setting-input {
-            width: 80px;
-            padding: 8px 12px;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 14px;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        .pulsing {
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateY(20px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .slide-in {
-            animation: slideIn 0.6s ease-out;
-        }
-
-        .error {
-            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
-            color: #dc2626;
-        }
-
-        .warning {
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-            color: #d97706;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
     </style>
 </head>
-<body>
-    <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <div class="header-left">
-                <div class="logo">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M7 20h10"/>
-                        <path d="M10 20c5.5-2.5.8-6.4 3-10"/>
-                        <path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"/>
-                        <path d="M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z"/>
-                    </svg>
-                </div>
-                <div class="header-title">
-                    <h1>GROWMATE</h1>
-                    <p>กระถางรดน้ำให้มิสตั้ก</p>
-                </div>
+<body class="bg-slate-50 min-h-screen">
+
+    <nav class="bg-white shadow-sm border-b border-slate-200 px-6 py-4">
+        <div class="max-w-5xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <i data-lucide="sprout" class="text-emerald-500 w-8 h-8"></i>
+                <h1 class="text-xl font-bold text-slate-800">Smart Plant <span class="text-emerald-500">Pro</span></h1>
             </div>
-            <div class="header-icons">
-                <div class="icon-btn" id="refreshBtn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
-                        <path d="M21 3v5h-5"/>
-                        <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
-                        <path d="M3 21v-5h5"/>
-                    </svg>
-                </div>
-                <div class="icon-btn" id="settingsBtn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
-                        <circle cx="12" cy="12" r="3"/>
-                    </svg>
-                </div>
+            <div id="connection-status" class="flex items-center gap-2 text-sm font-medium text-slate-500">
+                <span class="relative flex h-3 w-3">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                </span>
+                เชื่อมต่อแล้ว
             </div>
         </div>
+    </nav>
 
-        <!-- Connection Status -->
-        <div class="connection-status connected" id="connectionStatus">
-            🟢 เชื่อมต่อเซ็นเซอร์สำเร็จ
+    <main class="max-w-5xl mx-auto p-6">
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold text-slate-800">การตรวจสอบสภาพแวดล้อม</h2>
+            <p class="text-slate-500" id="last-update">อัปเดตล่าสุด: กำลังโหลด...</p>
         </div>
 
-        <!-- Main Content -->
-        <div class="main-content">
-            <!-- Status Card -->
-            <div class="status-card slide-in">
-                <div class="status-info">
-                    <h2>สุขภาพพืช</h2>
-                    <h3 id="plantHealth">ดีเยี่ยม</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center text-center">
+                <div class="bg-blue-50 p-3 rounded-full mb-4">
+                    <i data-lucide="droplets" class="text-blue-500 w-6 h-6"></i>
                 </div>
-                <div class="status-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M7 20h10"/>
-                        <path d="M10 20c5.5-2.5.8-6.4 3-10"/>
-                        <path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"/>
-                        <path d="M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z"/>
-                    </svg>
-                </div>
+                <span class="text-slate-500 text-sm font-medium">ความชื้นในดิน</span>
+                <span id="soil" class="text-3xl font-bold text-slate-800 mt-1">-- %</span>
             </div>
 
-            <!-- Metrics Row -->
-            <div class="metrics-row">
-                <div class="metric-card slide-in">
-                    <div class="metric-header">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="metric-icon">
-                            <path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/>
-                        </svg>
-                        <div class="metric-label">อุณหภูมิ</div>
-                    </div>
-                    <div class="metric-value" id="temperature">24.9°C</div>
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center text-center">
+                <div class="bg-orange-50 p-3 rounded-full mb-4">
+                    <i data-lucide="thermometer" class="text-orange-500 w-6 h-6"></i>
                 </div>
-                <div class="metric-card slide-in">
-                    <div class="metric-header">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="metric-icon">
-                            <path d="M2 12c0-2.38 7.19-6 8-6s8 3.62 8 6-7.19 6-8 6-8-3.62-8-6Z"/>
-                            <path d="M18 12h.01"/>
-                            <path d="M6 12h.01"/>
-                        </svg>
-                        <div class="metric-label">ความชื้น</div>
-                    </div>
-                    <div class="metric-value" id="humidity">80%</div>
-                </div>
+                <span class="text-slate-500 text-sm font-medium">อุณหภูมิ</span>
+                <span id="temp" class="text-3xl font-bold text-slate-800 mt-1">-- °C</span>
             </div>
 
-            <!-- Progress Card -->
-            <div class="progress-card slide-in">
-                <div class="progress-header">
-                    <div class="progress-title">ความชื้นในดิน</div>
-                    <div class="progress-dot" id="soilStatusDot"></div>
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center text-center">
+                <div class="bg-emerald-50 p-3 rounded-full mb-4">
+                    <i data-lucide="wind" class="text-emerald-500 w-6 h-6"></i>
                 </div>
-                <div class="progress-labels">
-                    <span>แห้ง</span>
-                    <span id="soilPercentLabel">65%</span>
-                    <span>เปียก</span>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="soilProgress"></div>
-                </div>
-                <div class="progress-status" id="soilStatus">ปานกลาง</div>
+                <span class="text-slate-500 text-sm font-medium">ความชื้นอากาศ</span>
+                <span id="humid" class="text-3xl font-bold text-slate-800 mt-1">-- %</span>
             </div>
 
-            <!-- Settings Panel -->
-            <div class="settings-panel slide-in" id="settingsPanel" style="display: none;">
-                <div class="section-title">การตั้งค่า</div>
-                <div class="setting-item">
-                    <div class="control-label">เซิร์ฟเวอร์ ESP32</div>
-                    <input type="text" class="setting-input" id="serverIP" placeholder="192.168.1.100" style="width: 140px;">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center text-center">
+                <div id="pump-icon-bg" class="bg-slate-50 p-3 rounded-full mb-4">
+                    <i data-lucide="power" id="pump-icon" class="text-slate-400 w-6 h-6"></i>
                 </div>
-                <div class="setting-item">
-                    <div class="control-label">รดน้ำเมื่อความชื้น < </div>
-                    <input type="number" class="setting-input" id="moistureThreshold" value="30" min="0" max="100">
-                </div>
-                <div class="setting-item">
-                    <div class="control-label">ระยะเวลารดน้ำ (วินาที)</div>
-                    <input type="number" class="setting-input" id="waterDuration" value="5" min="1" max="30">
-                </div>
+                <span class="text-slate-500 text-sm font-medium">สถานะปั๊มน้ำ</span>
+                <span id="pump" class="text-3xl font-bold text-slate-800 mt-1">ปิด</span>
             </div>
 
-            <!-- Controls Section -->
-            <div class="controls-section slide-in">
-                <div class="section-title">ระบบควบคุม</div>
-                
-                <div class="control-item">
-                    <div class="control-info">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="control-icon">
-                            <path d="M2 12c0-2.38 7.19-6 8-6s8 3.62 8 6-7.19 6-8 6-8-3.62-8-6Z"/>
-                            <path d="M18 12h.01"/>
-                            <path d="M6 12h.01"/>
-                        </svg>
-                        <div class="control-label">รดน้ำอัตโนมัติ</div>
-                    </div>
-                    <div class="toggle-switch active" id="autoWater"></div>
-                </div>
+        </div>
 
-                <button class="water-button" id="manualWater">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M2 12c0-2.38 7.19-6 8-6s8 3.62 8 6-7.19 6-8 6-8-3.62-8-6Z"/>
-                        <path d="M18 12h.01"/>
-                        <path d="M6 12h.01"/>
-                    </svg>
-                    <span>รดน้ำตอนนี้</span>
+        <div class="bg-emerald-900 rounded-3xl p-8 text-white relative overflow-hidden shadow-xl">
+            <div class="relative z-10">
+                <h3 class="text-xl font-semibold mb-2">สุขภาพต้นไม้โดยรวม</h3>
+                <p class="text-emerald-100 mb-4 opacity-80 font-light italic">"ดินมีความชื้นเพียงพอ ระบบกำลังทำงานตามปกติ"</p>
+                <button onclick="updateData()" class="bg-white text-emerald-900 px-6 py-2 rounded-xl font-bold hover:bg-emerald-50 transition-colors inline-flex items-center gap-2">
+                    <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                    รีเฟรชข้อมูล
                 </button>
-                <div class="water-status" id="waterStatus">รดน้ำครั้งล่าสุด: 2 ชั่วโมงที่แล้ว</div>
             </div>
-
-            <!-- Notification -->
-            <div class="notification slide-in" id="notification">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="notification-icon">
-                    <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
-                    <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
-                </svg>
-                <div class="notification-text">
-                    <div class="notification-title">การแจ้งเตือน</div>
-                    <div class="notification-desc" id="notificationText">ระบบทำงานปกติดี</div>
-                </div>
-            </div>
+            <i data-lucide="leaf" class="absolute -right-10 -bottom-10 w-64 h-64 text-emerald-800 opacity-20 transform -rotate-12"></i>
         </div>
-    </div>
+    </main>
 
     <script>
-        // Global variables
-        let temperature = 24.9;
-        let humidity = 80;
-        let soilMoisture = 65;
-        let autoWaterEnabled = true;
-        let serverIP = '192.168.1.100'; // Default ESP32 IP
-        let moistureThreshold = 30;
-        let waterDuration = 5;
-        let lastWaterTime = new Date(Date.now() - 2 * 60 * 60 * 1000); // 2 hours ago
-        let isConnected = false;
+        // ใส่ URL ที่ได้จาก Google Apps Script (Deployment URL)
+        const scriptUrl = 'YOUR_GOOGLE_APPS_SCRIPT_URL'; 
 
-        // DOM elements
-        const connectionStatus = document.getElementById('connectionStatus');
-        const plantHealth = document.getElementById('plantHealth');
-        const temperatureEl = document.getElementById('temperature');
-        const humidityEl = document.getElementById('humidity');
-        const soilProgressEl = document.getElementById('soilProgress');
-        const soilPercentLabel = document.getElementById('soilPercentLabel');
-        const soilStatus = document.getElementById('soilStatus');
-        const soilStatusDot = document.getElementById('soilStatusDot');
-        const autoWaterToggle = document.getElementById('autoWater');
-        const manualWaterBtn = document.getElementById('manualWater');
-        const waterStatus = document.getElementById('waterStatus');
-        const notification = document.getElementById('notification');
-        const notificationText = document.getElementById('notificationText');
-        const refreshBtn = document.getElementById('refreshBtn');
-        const settingsBtn = document.getElementById('settingsBtn');
-        const settingsPanel = document.getElementById('settingsPanel');
-        const serverIPInput = document.getElementById('serverIP');
-        const moistureThresholdInput = document.getElementById('moistureThreshold');
-        const waterDurationInput = document.getElementById('waterDuration');
-
-        // Initialize settings
-        serverIPInput.value = serverIP;
-        moistureThresholdInput.value = moistureThreshold;
-        waterDurationInput.value = waterDuration;
-
-        // Event listeners
-        refreshBtn.addEventListener('click', fetchSensorData);
-        
-        settingsBtn.addEventListener('click', () => {
-            settingsPanel.style.display = settingsPanel.style.display === 'none' ? 'block' : 'none';
-        });
-
-        serverIPInput.addEventListener('change', (e) => {
-            serverIP = e.target.value;
-        });
-
-        moistureThresholdInput.addEventListener('change', (e) => {
-            moistureThreshold = parseInt(e.target.value);
-        });
-
-        waterDurationInput.addEventListener('change', (e) => {
-            waterDuration = parseInt(e.target.value);
-        });
-
-        autoWaterToggle.addEventListener('click', function() {
-            autoWaterEnabled = !autoWaterEnabled;
-            this.classList.toggle('active');
-            updateNotification(
-                autoWaterEnabled ? 'เปิดระบบรดน้ำอัตโนมัติแล้ว' : 'ปิดระบบรดน้ำอัตโนมัติแล้ว',
-                autoWaterEnabled ? 'warning' : 'error'
-            );
-        });
-
-        manualWaterBtn.addEventListener('click', triggerManualWatering);
-
-        // Fetch sensor data from ESP32
-        async function fetchSensorData() {
+        async function updateData() {
             try {
-                refreshBtn.style.transform = 'rotate(360deg)';
-                const response = await fetch(`http://${serverIP}/data`);
-                
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                
+                const response = await fetch(scriptUrl);
                 const data = await response.json();
-                
-                // Update sensor values
-                temperature = data.temperature || temperature;
-                humidity = data.humidity || humidity;
-                soilMoisture = data.soilMoisture || soilMoisture;
-                
-                updateConnectionStatus(true);
-                updateDisplay();
-                
-                // Check if auto-watering is needed
-                if (autoWaterEnabled && soilMoisture < moistureThreshold) {
-                    setTimeout(() => triggerAutoWatering(), 1000);
-                }
-                
-            } catch (error) {
-                console.error('Error fetching sensor data:', error);
-                updateConnectionStatus(false);
-                simulateSensorData(); // Fallback to simulated data
-            } finally {
-                setTimeout(() => {
-                    refreshBtn.style.transform = 'rotate(0deg)';
-                }, 300);
-            }
-        }
 
-        // Trigger manual watering
-        async function triggerManualWatering() {
-            if (manualWaterBtn.disabled) return;
-            
-            manualWaterBtn.disabled = true;
-            manualWaterBtn.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M2 12c0-2.38 7.19-6 8-6s8 3.62 8 6-7.19 6-8 6-8-3.62-8-6Z"/>
-                    <path d="M18 12h.01"/>
-                    <path d="M6 12h.01"/>
-                </svg>
-                <span>กำลังรดน้ำ...</span>`;
-            manualWaterBtn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
-            
-            try {
-                const response = await fetch(`http://${serverIP}/water`, {
-                    method: 'POST'
-                });
+                // อัปเดตตัวเลข
+                document.getElementById('soil').innerText = data.moisture + ' %';
+                document.getElementById('temp').innerText = data.temp + ' °C';
+                document.getElementById('humid').innerText = data.humid + ' %';
+                document.getElementById('pump').innerText = data.pump === 'ON' ? 'เปิด' : 'ปิด';
                 
-                if (response.ok) {
-                    updateWaterStatus();
-                    soilMoisture = Math.min(95, soilMoisture + 25);
-                    updateDisplay();
-                    
-                    setTimeout(() => {
-                        manualWaterBtn.innerHTML = `
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M20 6 9 17l-5-5"/>
-                            </svg>
-                            <span>รดน้ำเสร็จแล้ว</span>`;
-                        
-                        setTimeout(() => {
-                            resetWaterButton();
-                        }, 2000);
-                    }, waterDuration * 1000);
+                // อัปเดตสีสถานะปั๊ม
+                const pumpBg = document.getElementById('pump-icon-bg');
+                const pumpIcon = document.getElementById('pump-icon');
+                if (data.pump === 'ON') {
+                    pumpBg.className = 'bg-blue-500 p-3 rounded-full mb-4 animate-pulse';
+                    pumpIcon.className = 'text-white w-6 h-6';
                 } else {
-                    throw new Error('Failed to trigger watering');
+                    pumpBg.className = 'bg-slate-50 p-3 rounded-full mb-4';
+                    pumpIcon.className = 'text-slate-400 w-6 h-6';
                 }
+
+                // อัปเดตเวลา
+                const date = new Date(data.time);
+                document.getElementById('last-update').innerText = 'อัปเดตล่าสุด: ' + date.toLocaleTimeString('th-TH');
+
             } catch (error) {
-                console.error('Error triggering manual watering:', error);
-                updateNotification('ไม่สามารถรดน้ำได้ กรุณาตรวจสอบการเชื่อมต่อ', 'error');
-                resetWaterButton();
+                console.error('Error fetching data:', error);
             }
         }
 
-        // Trigger auto watering
-        async function triggerAutoWatering() {
-            try {
-                const response = await fetch(`http://${serverIP}/water`, {
-                    method: 'POST'
-                });
-                
-                if (response.ok) {
-                    updateWaterStatus();
-                    soilMoisture = Math.min(95, soilMoisture + 20);
-                    updateDisplay();
-                    updateNotification('รดน้ำอัตโนมัติเสร็จแล้ว', 'warning');
-                }
-            } catch (error) {
-                console.error('Error triggering auto watering:', error);
-                updateNotification('รดน้ำอัตโนมัติล้มเหลว', 'error');
-            }
-        }
-
-        // Reset water button
-        function resetWaterButton() {
-            manualWaterBtn.disabled = false;
-            manualWaterBtn.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M2 12c0-2.38 7.19-6 8-6s8 3.62 8 6-7.19 6-8 6-8-3.62-8-6Z"/>
-                    <path d="M18 12h.01"/>
-                    <path d="M6 12h.01"/>
-                </svg>
-                <span>รดน้ำตอนนี้</span>`;
-            manualWaterBtn.style.background = 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)';
-        }
-
-        // Update connection status
-        function updateConnectionStatus(connected) {
-            isConnected = connected;
-            if (connected) {
-                connectionStatus.className = 'connection-status connected';
-                connectionStatus.textContent = '🟢 เชื่อมต่อเซ็นเซอร์สำเร็จ';
-            } else {
-                connectionStatus.className = 'connection-status disconnected';
-                connectionStatus.textContent = '🔴 ไม่สามารถเชื่อมต่อเซ็นเซอร์ได้';
-            }
-        }
-
-        // Update water status
-        function updateWaterStatus() {
-            lastWaterTime = new Date();
-            waterStatus.textContent = 'รดน้ำครั้งล่าสุด: เมื่อสักครู่';
-        }
-
-        // Update display
-        function updateDisplay() {
-            // Update temperature and humidity
-            temperatureEl.textContent = temperature.toFixed(1) + '°C';
-            humidityEl.textContent = Math.round(humidity) + '%';
-            
-            // Update soil moisture
-            updateSoilMoisture();
-            
-            // Update plant health
-            updatePlantHealth();
-            
-            // Update time since last watering
-            updateLastWateringTime();
-        }
-
-        // Update soil moisture display
-        function updateSoilMoisture() {
-            soilProgressEl.style.width = soilMoisture + '%';
-            soilPercentLabel.textContent = soilMoisture + '%';
-            
-            if (soilMoisture < 30) {
-                soilStatus.textContent = 'แห้ง - ต้องการน้ำ';
-                soilStatus.style.color = '#dc2626';
-                soilProgressEl.style.background = 'linear-gradient(90deg, #ef4444 0%, #dc2626 100%)';
-                soilStatusDot.style.background = '#dc2626';
-                updateNotification('ความชื้นในดินต่ำ ควรรดน้ำ', 'error');
-            } else if (soilMoisture < 70) {
-                soilStatus.textContent = 'ปานกลาง';
-                soilStatus.style.color = '#d97706';
-                soilProgressEl.style.background = 'linear-gradient(90deg, #fbbf24 0%, #f59e0b 100%)';
-                soilStatusDot.style.background = '#fbbf24';
-                updateNotification('ระบบทำงานปกติดี', 'warning');
-            } else {
-                soilStatus.textContent = 'เปียก - สภาวะดี';
-                soilStatus.style.color = '#059669';
-                soilProgressEl.style.background = 'linear-gradient(90deg, #10b981 0%, #059669 100%)';
-                soilStatusDot.style.background = '#10b981';
-                updateNotification('ความชื้นในดินเหมาะสม', 'success');
-            }
-        }
-
-        // Update plant health
-        function updatePlantHealth() {
-            const tempOk = temperature >= 20 && temperature <= 30;
-            const humidityOk = humidity >= 60 && humidity <= 90;
-            const soilOk = soilMoisture >= 30;
-            
-            if (tempOk && humidityOk && soilOk) {
-                plantHealth.textContent = 'ดีเยี่ยม';
-                plantHealth.style.color = '#166534';
-            } else if ((tempOk && humidityOk) || (tempOk && soilOk) || (humidityOk && soilOk)) {
-                plantHealth.textContent = 'ปกติ';
-                plantHealth.style.color = '#d97706';
-            } else {
-                plantHealth.textContent = 'ต้องดูแล';
-                plantHealth.style.color = '#dc2626';
-            }
-        }
-
-        // Update notification
-        function updateNotification(message, type = 'warning') {
-            notificationText.textContent = message;
-            
-            notification.className = `notification slide-in ${type}`;
-            
-            // Auto-hide success messages
-            if (type === 'success') {
-                setTimeout(() => {
-                    notification.style.opacity = '0.7';
-                }, 3000);
-                setTimeout(() => {
-                    notification.style.opacity = '1';
-                }, 6000);
-            }
-        }
-
-        // Update last watering time
-        function updateLastWateringTime() {
-            const now = new Date();
-            const diff = now - lastWaterTime;
-            const minutes = Math.floor(diff / (1000 * 60));
-            const hours = Math.floor(minutes / 60);
-            const days = Math.floor(hours / 24);
-            
-            let timeText;
-            if (minutes < 1) {
-                timeText = 'เมื่อสักครู่';
-            } else if (minutes < 60) {
-                timeText = `${minutes} นาทีที่แล้ว`;
-            } else if (hours < 24) {
-                timeText = `${hours} ชั่วโมงที่แล้ว`;
-            } else {
-                timeText = `${days} วันที่แล้ว`;
-            }
-            
-            waterStatus.textContent = `รดน้ำครั้งล่าสุด: ${timeText}`;
-        }
-
-        // Simulate sensor data (fallback when ESP32 is not connected)
-        function simulateSensorData() {
-            // Random variations for demo
-            temperature += (Math.random() - 0.5) * 0.3;
-            temperature = Math.max(20, Math.min(35, temperature));
-            
-            humidity += (Math.random() - 0.5) * 3;
-            humidity = Math.max(60, Math.min(90, humidity));
-            
-            if (!autoWaterEnabled) {
-                soilMoisture -= Math.random() * 0.2; // Gradual decrease
-                soilMoisture = Math.max(0, soilMoisture);
-            } else if (soilMoisture < moistureThreshold) {
-                soilMoisture += Math.random() * 2; // Auto-water simulation
-            }
-            
-            updateDisplay();
-        }
-
-        // Automatic data refresh
-        function startAutoRefresh() {
-            // Try to fetch real data every 10 seconds
-            setInterval(() => {
-                if (isConnected) {
-                    fetchSensorData();
-                } else {
-                    // Try to reconnect
-                    fetchSensorData();
-                }
-            }, 10000);
-
-            // Update display every 3 seconds (for time updates and simulated data)
-            setInterval(() => {
-                if (!isConnected) {
-                    simulateSensorData();
-                } else {
-                    updateLastWateringTime();
-                }
-            }, 3000);
-        }
-
-        // Add pulsing effect to status icon
-        function startStatusAnimation() {
-            setInterval(() => {
-                document.querySelector('.status-icon').classList.toggle('pulsing');
-            }, 2000);
-        }
-
-        // Initialize application
-        function init() {
-            updateDisplay();
-            startAutoRefresh();
-            startStatusAnimation();
-            
-            // Initial connection attempt
-            fetchSensorData();
-            
-            // Show connection hint if not connected after 5 seconds
-            setTimeout(() => {
-                if (!isConnected) {
-                    updateNotification(`ไม่สามารถเชื่อมต่อ ESP32 ที่ ${serverIP} ได้ - ใช้ข้อมูลจำลอง`, 'error');
-                }
-            }, 5000);
-        }
-
-        // Start the application
-        init();
+        // เริ่มต้นการทำงาน
+        lucide.createIcons(); // โหลดไอคอน
+        setInterval(updateData, 10000); // อัปเดตทุก 10 วินาที
+        updateData();
     </script>
 </body>
 </html>
